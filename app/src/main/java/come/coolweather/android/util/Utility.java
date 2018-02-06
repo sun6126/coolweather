@@ -2,6 +2,8 @@ package come.coolweather.android.util;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,6 +11,7 @@ import org.json.JSONObject;
 import come.coolweather.android.db.City;
 import come.coolweather.android.db.County;
 import come.coolweather.android.db.Province;
+import come.coolweather.android.gson.Weather;
 
 /**
  * Created by Administrator on 2017\12\6 0006.
@@ -75,4 +78,25 @@ public class Utility {
         }
         return false;
     }
+
+    /**
+     * 将string解析成weather对象
+     * @param response
+     * @return
+     */
+    public static Weather handleWeatherResponse(String response){
+
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
+            String weatherContent = jsonArray.getJSONObject(0).toString();
+            return new Gson().fromJson(weatherContent,Weather.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
 }
