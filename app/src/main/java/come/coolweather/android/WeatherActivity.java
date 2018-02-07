@@ -1,5 +1,6 @@
 package come.coolweather.android;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -25,13 +26,13 @@ import java.io.IOException;
 
 import come.coolweather.android.gson.Forecast;
 import come.coolweather.android.gson.Weather;
+import come.coolweather.android.service.AutoUpdateService;
 import come.coolweather.android.util.HttpUtil;
 import come.coolweather.android.util.Utility;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-import static come.coolweather.android.R.id.max_text;
 
 public class WeatherActivity extends AppCompatActivity {
 
@@ -175,6 +176,9 @@ public class WeatherActivity extends AppCompatActivity {
                             edit.putString("weather", responseText);
                             edit.apply();
                             showWeatherInfo(weather);
+
+                            Intent intent = new Intent(WeatherActivity.this, AutoUpdateService.class);
+                            startService(intent);
                         } else {
                             Toast.makeText(WeatherActivity.this, "获取天气信息失败", Toast.LENGTH_SHORT).show();
                         }
